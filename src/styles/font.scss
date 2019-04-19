@@ -1,0 +1,30 @@
+@import './styles/font/iconfont.css'; 
+/* Color modifiers
+ ========================================================================== */
+
+.text-muted { color: $text-muted-color !important; }
+.text-primary { color: $text-primary-color !important; }
+.text-success { color: $text-success-color !important; }
+.text-warning { color: $text-warning-color !important; }
+.text-danger { color: $text-danger-color !important; }
+
+
+/* Alignment modifiers
+ ========================================================================== */
+[num-positive] { color: saturate($text-success-color,100%) !important; }
+[num-positive^="-"] { color: saturate($text-danger-color,50%) !important; }
+
+[data-status^="1"] { color: saturate($global-primary-color,10%) !important; }
+[data-status^="2"] { color: saturate($global-warning-color,10%) !important; }
+[data-status^="3"] { color: saturate($global-success-color,10%) !important; }
+[data-status^="4"] { color: saturate($global-muted-color,10%) !important; }
+[data-status^="5"] { color: saturate($global-success-color,50%) !important; }
+[data-status^="7"] { color: saturate($global-success-color,90%) !important; }
+[data-status^="8"] { color: saturate($global-danger-color,50%) !important; }
+
+/* Alignment modifiers
+ ========================================================================== */
+ .text-left { text-align: left !important; }
+ .text-right { text-align: right !important; }
+ .text-center { text-align: center !important; }
+ .text-justify { text-align: justify !important; }

@@ -1,0 +1,169 @@
+.cell {
+  .el-tag {
+    margin-right: 8px;
+  }
+}
+
+.status-col {
+  .cell {
+    padding: 0 10px;
+    text-align: center;
+    .el-tag {
+      margin-right: 0px;
+    }
+  }
+}
+
+//暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
+.el-dialog {
+  transform: none;
+  left: 0;
+  position: relative;
+  margin: 0 auto;
+  .el-dialog__body {
+    padding: 0 20px 30px;
+  }
+}
+
+
+.el-dialog{
+  .el-form-item{
+    margin-bottom: 20px;
+  }
+  .dialogContent{
+    text-align:center;
+  }
+}
+
+//element ui table
+.el-table{
+  color: black!important;
+  thead{
+    color: black!important
+  }
+  .has-gutter{
+    .gutter{
+      // 表格的表头错位
+      display: inline!important;
+    }
+  }
+  td,th{
+    .cell{
+      padding:0 5px!important;
+      line-height: 1.6;
+    }
+  }
+  th{
+    background: linear-gradient(to bottom,#f8f8f8 0,#ececec 100%);
+  }
+  .el-button ,.el-button + .el-button{
+    margin: 0 2px 5px;
+  }
+}
+
+//element ui table
+.el-form{
+  .el-form-item{
+    margin-bottom: 15px;
+    .el-form-item{
+      margin-bottom: 0px;
+    }
+    .el-textarea{
+      width: 400px;
+      //input的双倍
+    }
+    .el-input-group__append, .el-input-group__prepend {
+      padding: 0 5px;
+    }
+    .el-input-group,.el-input{
+      width: 200px;
+    } 
+    .el-input__inner{
+      height: 28px;
+      line-height: 28px;
+    }
+    .el-radio,.el-radio+.el-radio {
+      margin-left: 5px;
+    }
+    .el-checkbox,.el-checkbox+.el-checkbox {
+      margin-left: 5px;
+    }
+  }
+  .symbol{
+    // 符号的样式  例如 -
+    width: 20px;
+    text-align: center;
+  }
+  .el-button{
+    width: 200px;
+  }
+  .functionality-btn{
+    width: auto;
+  }
+  .multi-line{
+    // form-item里面嵌套item使用的
+    .el-form-item__content{
+      display: flex;
+      margin-left: 0px;
+    }
+  }
+}
+/*菜单栏被激活*/
+.el-submenu {
+  .el-menu-item {
+    height: 40px;
+    line-height: 40px;
+  }
+  .is-active {
+    background: #263244 !important;
+  }
+}
+
+.el-button+.el-button {
+  margin-left: 5px;
+}
+
+.el-table .caret-wrapper {
+  width: 18px;
+}
+
+.el-picker-panel{
+  font-weight: bold;
+}
+// time选择器高亮
+.el-time-panel{
+  .el-time-panel__content {
+    &::before{
+      margin-right: 0;
+      margin-left: 0;
+      /* margin-top: -8px; */
+      padding: 0;
+      border-top: 1px solid #a6d0fc;
+      border-bottom: 1px solid #a6d0fc;
+      background: #ddebfa;
+    }
+    &::after{
+      border:none
+    }
+  }
+  .el-time-spinner__wrapper.is-arrow .el-time-spinner__item:hover:not(.disabled):not(.active) {
+    background: #a6d0fc;
+  }
+}
+.el-date-table.is-week-mode .el-date-table__row.current div, .el-date-table.is-week-mode .el-date-table__row:hover div, .el-date-table td.in-range div, .el-date-table td.in-range div:hover {
+  background-color: #a6d0fc;
+}
+.el-time-panel__content::before {
+  /* padding-left: 50%; */
+  margin-right: 0;
+  margin-left: 0;
+  /* padding: 0 0 10px; */
+  box-sizing: content-box;
+}
+
+@media only screen and (max-width: 770px) {
+  // 日期选择器在手机屏幕小的时候，可以滑动选择
+  .el-popper {
+    left: 0!important;
+  }
+}

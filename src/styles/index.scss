@@ -1,0 +1,379 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+@import './layout.scss';
+@import './font.scss';
+
+@import './transition.scss';
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+label {
+  font-weight: 700;
+}
+
+html {
+  box-sizing: border-box;
+  height: 100%;
+  background: rgba(251, 251, 251, .3);
+}
+
+#app{
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+code {
+  background: #eef1f6;
+  padding: 15px 10px;
+  margin-bottom: 20px;
+  display: block;
+  line-height: 36px;
+  a {
+    color: #337ab7;
+    cursor: pointer;
+    &:hover {
+      color: rgb(32, 160, 255);
+    }
+  }
+}
+
+input {
+  -webkit-appearance: none;
+}
+
+//main-container全局样式
+.app-container {
+  padding: 20px;
+}
+
+.link-type,
+.link-type:focus {
+  color: #337ab7;
+  cursor: pointer;
+  &:hover {
+    color: rgb(32, 160, 255);
+  }
+}
+
+.g-container{
+  padding: 15px;
+  background: #fff;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
+}
+
+.no-lable-layout{
+  width: 100%;
+  .el-form-item{
+    display: inline-block;
+  }
+  .el-form-item__label{
+    width: auto!important;
+    padding: 0 3px;
+  }
+  .el-input{
+    .el-input__inner{
+      padding:0 10px;
+    }
+  }
+  .el-date-editor{
+    .el-input__inner{
+      padding:0 30px;
+    }
+  }
+  .el-form-item__content{
+    margin: auto!important;
+    display: inline-block;
+  }
+  // 因为多选框有时候会震动
+  .el-select .el-tag{
+    margin:1px 2px
+  }
+  .el-button{
+    // 因为设置了er-form的全局按钮了
+    width: auto;
+  }
+}
+.g-search-box {
+  padding: 10px;
+  background: #fff;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
+  display: flex;
+  margin-bottom: 5px;
+  .el-form {
+    @extend .no-lable-layout;
+  }
+  .search-left {
+    flex-grow:1;
+  }
+  .search-right{
+    white-space: nowrap;
+    float: right
+  }
+  .el-input,.u-mini-input .el-input {
+    width: 125px;
+  }
+  .el-form-item {
+    display: inline-block !important;
+    margin: 0 1px 2px !important;
+    .el-button{
+      margin-left: 2px;
+    }
+    .el-button--mini, .el-button--mini.is-round {
+      padding: 7px 10px;
+    }
+  }
+  .el-select__tags + .el-input {
+    width: auto;
+  }
+  .el-select.multi-select{
+    vertical-align: middle;
+    padding: 0 1.6rem 0 0px ;
+    .el-input{
+      position: absolute;
+      top: 0;
+      min-height: 28px;
+      width: 100%;
+    }
+    .el-select__tags{
+      position: relative;
+      min-width: 11rem;
+      max-width: 400px!important;
+      transform: none;
+      // margin-bottom: 3px;
+      min-height: 28px;
+    }
+  }
+  .el-radio-button__inner {
+    padding: 5px;
+  }
+}
+
+.el-table{
+  // 金币列突出颜色
+  tbody{
+    .money-positive{
+      color:#29ab00
+      // background: #c1f5a5;
+    }
+    .money-negative{
+      color:#ff0808
+      
+      // background: #c1f5a5;
+    }
+    i{
+      font-weight: 700;
+    }
+  }
+}
+
+// 本页统计,最后一行区分颜色
+.g-table-curr-summary{
+  &>.el-table__body-wrapper>.el-table__body>tbody>tr{
+    &:last-child{
+      background: #ecf5ff;
+      // 合计行的展开按钮默认不显示
+      .el-table__expand-column{
+        .cell{
+          display:none
+        }
+      }
+    }
+  }
+}
+// 本页统计加全部总计,最后两行行区分颜色
+.g-table-total-summary{
+  &>.el-table__body-wrapper>.el-table__body>tbody>tr{
+    &:nth-last-child(2),&:last-child{
+      &,& td{
+        background: #ecf5ff;
+      }
+      // 合计行的展开按钮默认不显示
+      .el-table__expand-column{
+        .cell{
+          display:none
+        }
+      }
+    }
+  }
+}
+
+// 文字描述的区块，对索引加重字体的突出显示
+.g-desc-container{
+  dl{
+    margin:10px 0;
+    dt{
+      font-weight: bolder
+    }
+    dd{
+      text-indent: 1rem;
+      margin:5px 0;
+    }
+  }
+  b{
+    color: #faa05a ;
+  }
+  .main-i{
+    font-weight: bold;
+    color:#66ff99
+  }
+  .sub-i{
+    font-weight: bold;
+    color:#99cc66
+  }
+}
+
+.pagination {
+  float: right;
+  margin-top: 10px;
+}
+/*更改按钮样式*/
+.btn-style {
+  padding: 4px;
+  
+  .iconfont {
+    font-size: 12px;
+  }
+}
+
+.btn-round{
+  border-radius: 50%;
+}
+
+/*popover*/
+.popover-bg {
+  padding: 0;
+  width: 468px;
+  background: rgba(31,45,61,0.85);
+  color: #fff;
+  .popper__arrow::after {
+    border-top-color: rgba(31,45,61,0.85) !important;
+  }
+}
+/*方案详情*/
+.plan-name {
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: 1px solid #ffffff1f;
+}
+.plan-container {
+  margin: 15px;
+  font-size: 12px;
+  overflow-y: auto;
+  .plan-label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+// 方案的条件
+.g-condition {
+  background: #fff;
+  padding: 15px 0 10px;
+  margin-bottom: 10px;
+  .condition-item{
+    padding: 15px 5px 0;
+    background: rgba(0, 0, 0, 0.1);
+    margin-bottom: 5px;
+    @extend .no-lable-layout;
+    .el-form-item{
+      margin-bottom:15px
+    }
+  }
+  .el-input-group {
+    width: 120px!important;
+  }
+  .reminder{
+    padding: 0px 5px;
+    font-size: 14px;
+    font-weight: 700;
+    @extend .text-success;
+  }
+  .f-tool-btn {
+    width: auto;
+    // margin: 0 20px20px;
+  }
+}
+
+.g-a-link {
+  color: #1890FF;
+  cursor:pointer;
+  display: block;
+  width: 100%;
+}
+
+// 防止tooltip显示百分百被挡住
+.el-tooltip__popper {
+  max-width: 75%!important;
+}
+
+.no-mr-bottom{
+  margin-bottom:5px!important;
+}
+
+// 用户列表操作样式
+.user-list-operation{
+  .btn-style{
+   margin: 1px !important;
+  }
+}
+.m-user-info-edit{
+  &.el-collapse{
+    margin-bottom:10px;
+    .el-collapse-item{
+      .el-collapse-item__header{
+        padding:0 20px;
+        background-color:#f0f9eb;
+        font-size: 18px;
+        font-weight: bold;
+        .el-collapse-item__arrow{
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
+      .el-collapse-item__wrap{
+        background: #e0e0e0;
+        padding: 10px 0;
+        width: 100%;
+        .el-collapse-item__content{
+          padding:0;
+        }
+      }
+    }
+  }
+}
+// .succeed{
+//   color: #69aa46;
+//   font-size: 18px;
+//   font-weight: 700;
+// }
+// .mistake{
+//   color: red;
+//   font-size: 18px;
+//   font-weight: 700;
+// }
