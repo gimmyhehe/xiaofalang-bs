@@ -2,7 +2,7 @@ import { login, logout, statiStical } from '@/api/login'
 import { Loading } from 'element-ui'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { _pageTransfer } from '@/store/libs/tools'
-
+import { Message, MessageBox } from 'element-ui'
 const user = {
   state: {
     token: getToken(),
@@ -98,17 +98,28 @@ const user = {
     // 登录
     Login ({ commit }, userInfo) {
       // const username = userInfo.username.trim()
-      return new Promise((resolve, reject) => {
-        login(userInfo).then(({ err, res }) => {
-          if (!err) {
-            commit('SET_PERMISSION', res.menus)
-            commit('SET_INFO', { username: userInfo.account })
-            resolve()
-          } else {
-            reject(err)
-          }
+        return new Promise((resolve,reject)=>{
+            login(userInfo).then((res) => {
+              if(res.status==0){
+                let menus = [
+                'modifyPassword',
+                'addBarber','barberList',
+                'addProduct','productList',
+                ]
+                commit('SET_PERMISSION', menus)
+                commit('SET_INFO', { username: userInfo['user_name'] })
+                resolve()
+              } else {
+                Message({
+                  message: res.msg,
+                  type: 'error',
+                  duration: 3 * 1000
+                })
+                reject()
+            }
+          })
         })
-      })
+        
     },
 
     // 前端 登出

@@ -19,6 +19,11 @@
           登录
         </el-button>
       </el-form-item>
+      <el-form-item>
+        <el-button  style="width:100%;"  @click.native.prevent="handleRegister">
+          注册
+        </el-button>
+      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -32,7 +37,6 @@ export default {
       loginForm: {
         account: '',
         password: '',
-        key: ''
       },
       // GetMaintain: null, // 维护的轮询接口，暂不用
       loginRules: {
@@ -51,12 +55,18 @@ export default {
     }
   },
   methods: {
+    handleRegister(){
+      this.$router.push({ path: '/page/register' })
+    },
     handleLogin () {
       this.$refs.loginForm.validate(valid => {
         if (!valid) return false
         this.loading = true
+        let params = {}
+        params['user_name'] = this.loginForm.account
+        params['password'] = this.loginForm.password
         this.$store
-          .dispatch('Login', this.loginForm)
+          .dispatch('Login', params)
           .then(() => {
             this.loading = false
             this.$router.push({ path: '/' })

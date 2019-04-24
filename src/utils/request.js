@@ -2,13 +2,10 @@ import axios from 'axios'
 // import Vue from 'vue'
 import store from '@/store'
 import { Message, MessageBox } from 'element-ui'
-import { getToken } from '@/utils/auth'
-import { parseTime } from '@/utils/tools'
 import { setToken,setUserInfo } from '@/utils/auth'
 import sessionStore from '@/utils/sessionStore'
 let CancelToken = axios.CancelToken
-var cancel;
-let LogOutMessageBox
+var cancel
 // 设置请求的baseURL
 // axios.defaults.baseURL = store.getters.app_base_api
 // request拦截器
@@ -26,7 +23,6 @@ var service=axios.create({
 
  //添加请求拦截器
  service.interceptors.request.use(function(config){
-    console.log('store',store.getState())
    // if(store.getters.token){
    //     config.headers['TOKEN']=getCookie('TOKEN')
    // }
@@ -37,7 +33,6 @@ var service=axios.create({
 
  //添加请求拦截器
  service.interceptors.request.use(function(config){
-    console.log('store',store.getState())
    // if(store.getters.token){
    //     config.headers['TOKEN']=getCookie('TOKEN')
    // }
@@ -67,17 +62,15 @@ service.interceptors.response.use(function(response){
  //     return response.data
  //   }
  // },
-   console.log(response)
+   console.log('request',response)
    const res = response
    let token = res.headers['user_name']
    let userId = res.headers['user_id']
+   let userInfo = res.headers['user_info']
    if (token) {
-       let userinfo = store.getState().userinfo
-       userinfo.token = token
-
-       store.dispatch(update(userinfo))
+       store.commit('SET_TOKEN', { data: { token}})
      // 如果 header 中存在 token，现在只从response更新token
-       setUserInfo('20190402003221259611')
+       setUserInfo(userInfo)
        setToken({token})
        sessionStore.setItem('userId',userId)
    }

@@ -2,7 +2,6 @@ import Cookies from 'js-cookie'
 import axios from 'axios'
 import EventProxy from 'eventproxy'
 import { JSEncrypt } from 'jsencrypt'
-import { getMaintenanceOnAdmin } from '@/api/maintenance'
 var ep = new EventProxy()
 
 const app = {
@@ -111,46 +110,6 @@ const app = {
         return state.adminMaintain
       })
     },
-    changeAPI ({ state, commit }) {
-      if (!state.isTestApi) { // 是否正在获取更新线路
-        commit('SET_API_STATUS', 1)
-      } else {
-        return Promise.race([
-          new Promise((resolve) => {
-            ep.once('changeAPIFinish', (data) => { return resolve(data) })
-          }),
-          new Promise((resolve) => {
-            setTimeout(() => resolve(axios.defaults.baseURL), 10000)// 如果10s之内没有收到通知，则返回当前的baseUrl
-          })
-        ])
-      }
-      return new Promise((resolve) => {
-        // let _CancelTokenList = []
-        // let _apiNums = 0 // 计算当前已经测试完的数量
-        // 测试api
-        console.log('state.app_base_api_list',state.app_base_api_list)
-        let _api_config = state.app_base_api_list[0].api
-        commit('SET_APP_BASE_API', _api_config)
-        ep.emit('changeAPIFinish', axios.defaults.baseURL)
-        commit('SET_API_STATUS', false)
-        // for (let _api_config of state.app_base_api_list) {
-        //   testAPI(_api_config.api, (c) => { _CancelTokenList.push(c) }).then(({ res, err }) => {
-        //     _apiNums++
-        //     if (!err || _apiNums >= state.app_base_api_list.length) {
-        //       if (!err && state.isTestApi) commit('SET_APP_BASE_API', _api_config)
-        //       for (let _CancelToken of _CancelTokenList) {
-        //         if (_CancelToken && typeof _CancelToken === 'function' && _CancelToken.name === 'cancel') {
-        //           _CancelToken && _CancelToken('Operation canceled.')
-        //         }
-        //       }
-        //       ep.emit('changeAPIFinish', axios.defaults.baseURL)
-        //       commit('SET_API_STATUS', false)
-        //       return resolve(axios.defaults.baseURL)
-        //     }
-        //   })
-        // }
-      })
-    }
   }
 }
 

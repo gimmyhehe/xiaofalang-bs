@@ -1,4 +1,5 @@
 import main from '@/main'
+import myConfig from '../../config/myconfig'
 export default {
   // USER_TYPE: {
   //   // "business"(商家)，staff(员工)，shareholder（股东），big_manager(总经理),manager(经理)
@@ -19,7 +20,7 @@ export default {
     7: 'subAccount'
   }
 }
-
+export const SERVER = myConfig.SERVER
 // 用来表单对象合并的
 export const GAME_TYPE_FORM = {
   'Casino': '',

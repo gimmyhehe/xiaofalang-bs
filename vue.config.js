@@ -5,7 +5,7 @@ const webpack = require('webpack')
 const resolve = dir => {
   return path.join(__dirname, dir)
 }
-
+const myConfig = require('./config/myconfig')
 const env = require('./config/' + (process.env.env_config || 'prod') + '.env')
 
 module.exports = {
@@ -72,6 +72,6 @@ module.exports = {
     }
   },
   devServer: {
-    proxy: 'http://localhost:8080/HairStyle/api/'
+    proxy: myConfig.SERVER+'/HairStyle/api/'
   }
 }

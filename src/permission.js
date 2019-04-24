@@ -3,13 +3,11 @@ import store from './store'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
 import { getToken } from '@/utils/auth' // 验权
-import { getKey } from '@/api/app'
 
 const loginPage = '/page/login'
-const whiteList = ['/page/login', '/origin']
+const whiteList = ['/page/login', '/origin', '/page/register']
 router.beforeEach(async (to, from, next) => {
   NProgress.start()
-
   // if (!store.state.app.isInitAPI) { // 初始化选择api线路
   //   await store.dispatch('changeAPI').then(() => {
   //     // store.dispatch('getNavGameList')

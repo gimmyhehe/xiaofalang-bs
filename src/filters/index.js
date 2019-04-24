@@ -1,6 +1,6 @@
 import { BANK_LIST } from '@/utils/config'
 import { toThousandsls } from '@/utils/global'
-
+import { SERVER } from '@/utils/config'
 // function pluralize(time, label) {
 //   if (time === 1) {
 //     return time + label
@@ -106,4 +106,11 @@ export const toThousandslsFilter = toThousandsls
 // 转换银行名字统一为显示中文名
 export function filterBankName (value) {
   return BANK_LIST[value] || value
+}
+
+export function fillImg(value){
+  if(value.startsWith('/HairStyle')){
+    return SERVER+value
+  }
+  return value
 }

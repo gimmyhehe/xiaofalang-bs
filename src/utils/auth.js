@@ -1,9 +1,16 @@
 import Cookies from 'js-cookie'
-const TokenKey = 'Admin-Token'
-const TokenRefreshAt = 'Token-Refresh-At'
 
+const TokenKey = 'ADMIN-Token'
+const TokenRefreshAt = 'ADMIN-Token-Refresh-At'
+const userInfoKey =  'admin_user_info'
 export function getToken () {
   return Cookies.get(TokenKey)
+}
+export function getUserInfo(){
+  return Cookies.get(userInfoKey)
+}
+export function setUserInfo(userInfo){
+  return Cookies.set(userInfoKey, userInfo)
 }
 
 export function setToken ({ time = Math.floor(Date.now() / 1000), token }) {
@@ -24,6 +31,7 @@ export function setToken ({ time = Math.floor(Date.now() / 1000), token }) {
 
 export function removeToken () {
   Cookies.remove(TokenRefreshAt)
+  Cookies.remove(userInfoKey)
   return Cookies.remove(TokenKey)
 }
 

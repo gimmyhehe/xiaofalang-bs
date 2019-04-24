@@ -18,8 +18,9 @@
 </template>
 
 <script>
-import { modifyPwd } from '@/api/admin'
+import { modifyPassword } from '@/api/user'
 import { successMsg } from '@/utils/tools'
+import { getToken } from '@/utils/auth'  
 export default {
   name: 'modifyPassword',
   data () {
@@ -35,7 +36,7 @@ export default {
           { required: true, message: this.$t('required'), trigger: 'change' }
         ],
         password: [
-          { required: true, min: 8, max: 16, message: this.$t('sys.pwdTip'), trigger: 'blur,change' }
+          { required: true, min: 3, max: 16, message: this.$t('sys.pwdTip'), trigger: 'blur,change' }
           // { required: true, message: this.$t('required'), trigger: 'blur' }
         ],
         password_confirmation: [
@@ -49,15 +50,21 @@ export default {
       this.$refs['modify'].validate((valid) => {
         if (!valid) return false
         this.buttomLoading = true
-        modifyPwd(this.modify).then(({ err, res }) => {
-          if (!err) {
+        let params = {}
+        params['user_name'] = getToken()
+        params['password'] = this.modify['oldPwd']
+        params['new_password'] = this.modify['password']
+        modifyPassword(params).then((res) => {
+          if(res.status == 0){
             successMsg('您的登录密码已修改，请重新登录')
             this.$store.dispatch('clearUserInfo')
             this.$router.push('/')
+          }else{
+            this.$message.error(res.msg)
+          }
             // 重置表单
             // this.$refs['modify'].resetFields()
-          }
-          this.buttomLoading = false
+            this.buttomLoading = false
         })
       })
     },
