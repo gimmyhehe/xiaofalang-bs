@@ -198,6 +198,12 @@ $light_gray: #eee;
     padding: 12px 5px 12px 15px;
     color: $light_gray;
   }
+  .avatar-uploader, .avatar-uploader-icon{
+        width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    display: block;
+  }
   .el-input {
     display: inline-block;
     width: 100% !important;
@@ -246,5 +252,16 @@ $light_gray: #eee;
     display: block;
     cursor: pointer;
   }
+  .avatar-uploader-icon{
+    width: 150px;
+    height: 150px;
+  }
+  .el-upload{
+    img{
+      widows: 150px;
+      height: 150px;
+    }
+  }
 }
+
 </style>

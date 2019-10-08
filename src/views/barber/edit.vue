@@ -47,10 +47,10 @@ export default {
       server: SERVER,
       loading: false, // 页面的加载loading
       ruleForm: {
-        fileImg: null,
         hairstyle_name:null,
         hairstyle_intr:null,
-        hairstyle_level:null
+        hairstyle_level:null,
+        fileImg:null,
       },
       rules: {
         hairstyle_name: [
@@ -68,27 +68,39 @@ export default {
       }
     }
   },
+  mounted(){
+    console.log('this.ruleForm111',this.ruleForm)
+  },
   computed: {
     ...mapGetters(['token']),
     barberid () { // 发型师ID
       return this.$route.params.id || false
     },
   },
-  beforeRouteEnter (to, from, next) {
-    let hairstyle_id = to.params.id || false
+  // beforeRouteEnter (to, from, next) {
+  //   let hairstyle_id = to.params.id || false
+  //   if(hairstyle_id){
+  //     onehairstyle({hairstyle_id}).then(barberInfo=>{
+  //       next(vm => vm.setInitInfo(barberInfo))
+  //     })
+  //   }
+  //   next()
+  // },
+  beforeMount(){
+     let hairstyle_id = this.barberid || false
     if(hairstyle_id){
       onehairstyle({hairstyle_id}).then(barberInfo=>{
-        next(vm => vm.setInitInfo(barberInfo))
+        this.setInitInfo(barberInfo)
       })
     }
-    next()
   },
   methods: {
     setInitInfo(barberInfo){
       this.loading = true
-      this.ruleForm = barberInfo
-      this.imageUrl = barberInfo['hairstyle_pic']
-      this.loading = false
+        this.imageUrl = barberInfo['hairstyle_pic']
+        this.ruleForm = barberInfo
+        console.log('this.ruleForm',this.ruleForm)
+        this.loading = false
     },
     submitForm (formName) {
       // 提交

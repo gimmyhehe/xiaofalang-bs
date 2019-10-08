@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 const TokenKey = 'ADMIN-Token'
 const TokenRefreshAt = 'ADMIN-Token-Refresh-At'
 const userInfoKey =  'admin_user_info'
+const userInfo =  'user_info'
 export function getToken () {
   return Cookies.get(TokenKey)
 }
@@ -21,6 +22,8 @@ export function setToken ({ time = Math.floor(Date.now() / 1000), token }) {
   ) {
     // 用户关闭浏览器时会删除Cookie。
     setTokenRefreshTime(time)
+    Cookies.set(userInfo, '1')
+    Cookies.remove(userInfo)
     return Cookies.set(TokenKey, token)
   }
   // else {

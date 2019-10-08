@@ -104,7 +104,7 @@ const user = {
                 let menus = [
                 'modifyPassword',
                 'addBarber','barberList',
-                'addProduct','productList',
+                'addProduct','productList','ordertList'
                 ]
                 commit('SET_PERMISSION', menus)
                 commit('SET_INFO', { username: userInfo['user_name'] })

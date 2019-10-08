@@ -148,5 +148,16 @@ export const asyncRouterMap = [
       { path: 'list', meta: { permission: ['productList'] }, component: _import('product/productList'), name: 'productList' }
     ]
   },
+  {
+    path:'/page/order',
+    component: Layout,
+    redirect: 'noredirect',
+    name: 'Order',
+    icon: 'createtask',
+    meta: { permission: ['ordertList'] },
+    children: [
+      { path: 'list', meta: { permission: ['ordertList'] }, component: _import('order/orderList'), name: 'ordertList' }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]

@@ -3,7 +3,7 @@
     <div class="g-search-box">
       <el-form :inline="true" :model="params" class="demo-form-inline" @keyup.enter.native="getList({})" >
         <el-form-item>
-          <el-input v-model.trim="params.q.name" placeholder="套餐名称"></el-input>
+          <el-input v-model.trim="params.q.name" placeholder="订单号"></el-input>
         </el-form-item>
         <el-form-item>
           <el-select v-model="params.q.status" clearable>
@@ -15,9 +15,6 @@
           <el-button type="primary" @click="getList({})">{{$t('search')}}</el-button>
         </el-form-item>
       </el-form>
-      <div class="search-right">
-        <el-button type="primary" @click="$router.push('add')">新增套餐</el-button>
-      </div>
     </div>
     <template v-if="tableData">
       <el-table
@@ -25,23 +22,21 @@
         border stripe
         style="width: 100%;"
         >
+        <el-table-column prop="order_id" label="订单号" align="center"></el-table-column>
         <el-table-column prop="product_name" label="套餐名" align="center"></el-table-column>
-        <el-table-column prop="product_price" label="价格" align="center"></el-table-column>
-        <el-table-column prop="product_time" label="上架时间" align="center">
+        <el-table-column prop="order_price" label="价格" align="center"></el-table-column>
+        <el-table-column prop="other_info" label="备注" align="center"></el-table-column>
+        <el-table-column prop="hairstyle.hairstyle_name" label="发型师" align="center"></el-table-column>
+        <!-- <el-table-column prop="order_time" label="预约时间" align="center">
           <template slot-scope="scope">
-            {{scope.row.product_time | parseTime}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="product_intr" label="简介" align="center"></el-table-column>
-        <!-- <el-table-column prop="hairstyle_pic" label="图片" align="center" class='img-list'>
-          <template slot-scope="scope">
-            <img :src='server+scope.row.hairstyle_pic' width="30" height="30" alt="111">
+              {{scope.row.order_time | parseTime('yyyy-mm-dd') }}
           </template>
         </el-table-column> -->
-        <el-table-column :label="$t('activity.state')" align="center" width="60px">
+     
+        <el-table-column :label="$t('activity.state')" align="center" width="80px">
           <template slot-scope="scope">
-            <el-tag :type="scope.row.is_active === true?'success':'danger'">
-              {{scope.row.is_active === true? $t('user.enable'): $t('user.disabled')}}
+            <el-tag :type="scope.row.is_active === 1?'success':'danger'">
+              {{status[scope.row.is_active]}}
             </el-tag>
           </template>
         </el-table-column>
@@ -49,16 +44,11 @@
           <template slot-scope="scope">
             <el-button
               class="btn-style"
-              :title="scope.row.is_active === true?$t('user.disabled'): $t('user.enable')"
-              :type="scope.row.is_active === true?'danger':'success'"
-              @click="toggleEnabled(scope.row.id,scope.row.is_active === true?false:true)"
+              :title="scope.row.is_active === 1? '商家接单' : '不可操作'"
+              :type="scope.row.is_active != 1?'danger':'success'"
+              @click="acceptOrder(scope.row.order_id,scope.row.is_active === 1?true:false)"
               :disabled="buttonLoading">
               <i :class="`iconfont icon-${scope.row.is_active === true?'disabled':'enabled'}`"></i>
-            </el-button>
-            <el-button type="primary"
-              class="btn-style"
-              @click="$router.push(`/page/product/edit/${scope.row.product_id}`)">
-              <i class="iconfont icon-edit"></i>
             </el-button>
           </template>
         </el-table-column>
@@ -81,13 +71,15 @@
 import { successMsg } from '@/utils/tools'
 import { getUserInfo } from '@/utils/auth'
 import { SERVER } from '@/utils/config'
-import { scan_products } from '@/api/product'
+import { findorderbycompany_id, ordersuccess } from '@/api/order'
 import { mapGetters } from 'vuex'
+import { setTimeout } from 'timers';
 export default {
   name: 'ActivityList',
   data () {
     return {
       server:SERVER,
+      status:['已完成','预约中','预约成功','取消'],
       params: {
         page: 1,
         pagesize: 15,
@@ -119,22 +111,39 @@ export default {
     getList () {
       this.loading = true
       let company_id = getUserInfo().slice(20)
-      scan_products({company_id}).then(res=>{
-        console.log(res)
-        this.tableData = res.productlist
+      let tList = []
+      findorderbycompany_id({company_id}).then(res=>{
+        console.log('res',res)
+        let productlist = res.productlist
+        if(productlist && productlist.length>0){
+          productlist.forEach(item => {
+            if( item.order && item.order.length>0){
+              for(let i=0 ;i< item.order.length;i++){
+                item.order[i]['product_name'] = item['product_name']
+                item.order[i]['product_price'] = item['product_price']
+                tList.push(item.order[i])
+              }
+            }
+          });
+        }
+
+        this.tableData = tList
         this.loading = false
       })
     },
-    toggleEnabled (id, status) {
-      // 启用停用
-      this.buttonLoading = true
-      activityEdit({ id, status }).then(({ res, err }) => {
-        if (!err) {
-          successMsg()
-          this.getList({ page: this.params.page })
-        }
-        this.buttonLoading = false
-      })
+    acceptOrder(order_id,status){
+      if(status){
+        ordersuccess({order_id}).then(
+          ()=>{
+            successMsg('接单成功');
+            setTimeout(()=>{
+              this.$router.go(0)
+            },300)
+            
+          }
+        )
+      }
+      return ;
     }
   }
 }

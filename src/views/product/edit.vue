@@ -9,9 +9,6 @@
       <el-form-item label="价格" prop="product_price" >
           <el-input v-model="ruleForm.product_price"></el-input>
       </el-form-item>
-      <el-form-item label="数量" prop="product_amount" >
-          <el-input v-model="ruleForm.product_amount"></el-input>
-      </el-form-item>
       <el-form-item label="套餐详情" prop="product_intr" >
           <el-input v-model="ruleForm.product_intr" type="textarea"></el-input>
       </el-form-item>
@@ -70,7 +67,6 @@ export default {
         product_name:null,
         product_price:null,
         product_intr:null,
-        product_amount:null,
       },
       width: null,
       height: null,
@@ -95,16 +91,21 @@ export default {
       return this.$route.params.id || false
     },
   },
-  beforeRouteEnter (to, from, next) {
-    let product_id = to.params.id || false
+   beforeMount(){
+     let product_id = this.productid || false
     if(product_id){
       oneproduct({product_id}).then(barberInfo=>{
-        next(vm => vm.setInitInfo(barberInfo))
+        this.setInitInfo(barberInfo)
       })
     }
-    next()
   },
   methods: {
+    setInitInfo(barberInfo){
+      this.loading = true
+        this.ruleForm = barberInfo
+        console.log('this.ruleForm',this.ruleForm)
+        this.loading = false
+    },
     handelChange(file, fileList){
       console.log('file',file,'filelist',fileList)
       this.fileList = fileList
@@ -114,29 +115,13 @@ export default {
       this.ruleForm.ip_black_list = value.split('\n')
     },
     // 条件的数组校验
-    setInitData (vipList, userData) {
-      // 获取会员列表和处理编辑状态下的数据
-      this.loading = true
-      if (vipList && !vipList.err) {
-        this.vipList = vipList.res
-      }
-      if (userData && !userData.err) {
-        // 编辑状态
-        this.ruleForm = Object.assign(this.ruleForm, userData.res, { rewards: JSON.parse(userData.res.rewards) || [] }, { levels: JSON.parse(userData.res.levels) || [] }, { ip_black_list: JSON.parse(userData.res.ip_black_list) || [] }, { conditions: JSON.parse(userData.res.conditions) || [] })
-        // //  新加功能 兼容旧数据
-        // this.ruleForm.end_date = this.ruleForm.time_limit === 0 ? null : this.ruleForm.end_date
-        this.ipValue = this.ruleForm.ip_black_list.join('\n')
-        this.calculateTime = [this.ruleForm.stat_freq, this.ruleForm.freq_day || null]
-        this.showParams()
-      }
-      this.loading = false
-    },
     submitForm (formName) {
       // 提交
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.loading = true
           let params = this.ruleForm
+          params['product_amount'] =100
           for(let index in this.fileList){
             params[`fileImg${index}`] = this.fileList[index]['raw']
           }
@@ -148,7 +133,7 @@ export default {
                 this.$refs['ruleForm'].resetFields()
               })
             }else{
-              alert(1234)
+              alert("失败了")
             }
             this.loading = false
           })
